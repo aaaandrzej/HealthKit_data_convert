@@ -30,7 +30,7 @@ def main():
 
   # Go line-by-line through data file
   for line in input_data_file:
-    if line.startswith(f' <Record type="') :
+    if line.startswith(f' <Record type="HKQuantityTypeIdentifierBodyMass"'):  # CHANGED only to export body mass
 
       line_data = []
       for key in keys:
@@ -40,7 +40,7 @@ def main():
 
         value = ""
         for char in line[starting_ind:]:
-          if char is not '"':  # Collect all characters until the closing quotation mark
+          if char != '"':  # Collect all characters until the closing quotation mark
             value = value + char
           else:  # When the closing quotation mark is encountered, exit loop
              break
@@ -57,10 +57,10 @@ def main():
   # Open output file and write CSV data
   output_file = open(sys.argv[2], "w")
 
-
-  output_file.write(f"RecordType, DateTime, Value, Unit,\n")
+  output_file.write(f"DateTime, Value, Unit,\n")
   for element in extracted_data:
-    output_file.write(f"{element[0]}, {element[1]}, {element[2]}, {element[3]}\n")
+    element[1] = element[1].split()[0]  # CHANGED stripping timestamp to provide date only
+    output_file.write(f"{element[1]}, {element[2]}, {element[3]}\n")
 
   output_file.close()
   exit(f"\nOutput file {sys.argv[2]} saved.\nExiting.\n\n")
@@ -85,7 +85,7 @@ def extract_InstantaneousBeatsPerMinute_list(input_data_file, extracted_data, da
 
         value = ""
         for char in line[starting_ind:]:
-          if char is not '"':  # Collect all characters until the closing quotation mark
+          if char != '"':  # Collect all characters until the closing quotation mark
             value = value + char
           else:  # When the closing quotation mark is encountered, exit loop
              break
