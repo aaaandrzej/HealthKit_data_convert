@@ -15,14 +15,15 @@ import sys
 def main():
 
   # Check if correct number of input argments were given, exit if not
-  if len(sys.argv) < 3:
-    exit(f"\nERROR: File names not specified. Usage: {sys.argv[0]} [input_file.xml] [output_file.csv]\nExiting.\n\n")
+  # if len(sys.argv) < 3:
+  #   exit(f"\nERROR: File names not specified. Usage: {sys.argv[0]} [input_file.xml] [output_file.csv]\nExiting.\n\n")
 
   keys = ['Record type', 'startDate', 'value', 'unit']
 
   # Open data file
   try:
-    input_data_file = open(sys.argv[1], "r+")
+    input_data_file = open("export.xml", "r+")
+    # input_data_file = open(sys.argv[1], "r+")  # CHANGED open default file
   except:
     exit(f"\nERROR: Specified file {sys.argv[1]} could not be opened.\nExiting.\n\n")
 
@@ -55,7 +56,7 @@ def main():
         extracted_data = extract_InstantaneousBeatsPerMinute_list(input_data_file, extracted_data, line_data[1])
 
   # Open output file and write CSV data
-  output_file = open(sys.argv[2], "w")
+  output_file = open("export.csv", "w")
 
   output_file.write(f"DateTime, Value, Unit,\n")
   for element in extracted_data:
@@ -63,7 +64,7 @@ def main():
     output_file.write(f"{element[1]}, {element[2]}, {element[3]}\n")
 
   output_file.close()
-  exit(f"\nOutput file {sys.argv[2]} saved.\nExiting.\n\n")
+  exit()
 
 
 # InstantaneousBeatsPerMinute must be treated separately
@@ -104,4 +105,5 @@ def extract_InstantaneousBeatsPerMinute_list(input_data_file, extracted_data, da
   return extracted_data
 
 # Run program
+
 main()
